@@ -1,0 +1,171 @@
+{
+  "brand": "CyberShield Academy",
+  "tagline": "Understand the threat. Master the defense.",
+  "description": "A free, practical cybersecurity awareness academy: learn how attacks work, how they are detected, and how defenders respond — then practice in a safe game arena.",
+  "version": "1.0.0",
+  "stats": [
+    { "value": "50", "label": "Attack types covered", "detail": "across 13 domains" },
+    { "value": "48K+", "label": "Active learners", "detail": "simulated demo figure" },
+    { "value": "120+", "label": "Practice challenges", "detail": "safe, in-browser only" },
+    { "value": "13", "label": "Knowledge domains", "detail": "beginner to advanced" }
+  ],
+  "domains": [
+    { "id": "Social Engineering", "icon": "🎣", "color": "cyan", "blurb": "How attackers manipulate people rather than machines." },
+    { "id": "Malware", "icon": "🧬", "color": "red", "blurb": "Ransomware, trojans, worms, and fileless techniques." },
+    { "id": "Network Attacks", "icon": "🌐", "color": "blue", "blurb": "Traffic flooding, interception, and reconnaissance." },
+    { "id": "Web Application Attacks", "icon": "🧱", "color": "violet", "blurb": "Injection, broken access control, and the OWASP Top 10." },
+    { "id": "Wireless and IoT Attacks", "icon": "📡", "color": "green", "blurb": "Rogue access points, Bluetooth, and device botnets." },
+    { "id": "Cloud Security Threats", "icon": "☁️", "color": "cyan", "blurb": "Misconfigurations, leaked keys, and over-broad identity." },
+    { "id": "Identity and Access Attacks", "icon": "🔑", "color": "amber", "blurb": "Credential reuse, spraying, MFA abuse, and session theft." },
+    { "id": "Insider Threats and Physical Security", "icon": "🏢", "color": "red", "blurb": "Trusted access misused, plus physical and people risks." },
+    { "id": "Supply Chain and Third-Party Attacks", "icon": "🔗", "color": "violet", "blurb": "Compromising vendors and dependencies to reach many victims." },
+    { "id": "Advanced Threats", "icon": "🕵️", "color": "blue", "blurb": "APTs, zero-days, lateral movement, and exfiltration." },
+    { "id": "Mobile Security Threats", "icon": "📱", "color": "green", "blurb": "Device loss, malicious apps, and mobile lures." },
+    { "id": "AI-driven Threats", "icon": "🤖", "color": "amber", "blurb": "Deepfakes, synthetic phishing, and prompt injection." },
+    { "id": "Cryptography and Data Protection", "icon": "🔐", "color": "cyan", "blurb": "Encryption, hashing, keys, and protecting data at rest." }
+  ],
+  "tips": [
+    "Treat urgency as a warning sign: scammers want you to act before you think.",
+    "Use a password manager so every account can have a unique password.",
+    "An unexpected MFA prompt is an attack until proven otherwise — deny and report.",
+    "Verify payment or bank-detail changes using a phone number you already trust.",
+    "Update your router and IoT devices; default passwords are an open door.",
+    "On public Wi-Fi, confirm the network name with staff and keep HTTPS on.",
+    "A familiar voice or face can be generated. Verify the request, not the medium."
+  ],
+  "selfCheck": [
+    { "q": "I use a different password for every important account.", "yes": 20, "no": 0, "tip": "A password manager makes unique passwords effortless." },
+    { "q": "I have multi-factor authentication enabled on my email.", "yes": 25, "no": 0, "tip": "Email is the reset key for everything else — protect it with MFA." },
+    { "q": "I check the sender and link destination before clicking.", "yes": 20, "no": 0, "tip": "Hover to preview links; type known addresses yourself when in doubt." },
+    { "q": "My devices and apps are set to update automatically.", "yes": 15, "no": 0, "tip": "Patch management closes the doors attackers love most." },
+    { "q": "I know how to report a suspicious message at work or school.", "yes": 20, "no": 0, "tip": "Fast reporting protects everyone — make sure the path is obvious." }
+  ],
+  "defense": {
+    "socRoles": [
+      { "name": "L1 Analyst", "tag": "Triage", "text": "First responder to alerts. Validates signals, enriches context, escalates true positives, and documents decisions." },
+      { "name": "L2 Analyst", "tag": "Investigate", "text": "Deep-dives into incidents, correlates logs across sources, hunts for scope, and recommends containment." },
+      { "name": "L3 Analyst", "tag": "Expert", "text": "Owns complex investigations, reverse-engineers suspicious artifacts, and tunes detection engineering." },
+      { "name": "Threat Hunter", "tag": "Proactive", "text": "Builds hypotheses from intelligence and searches telemetry for activity that automation missed." },
+      { "name": "IR Lead", "tag": "Coordinate", "text": "Runs the incident bridge, makes containment decisions, manages communications, and drives lessons learned." }
+    ],
+    "lifecycle": [
+      { "id": "prep", "n": 1, "name": "Preparation", "text": "Build the team, playbooks, tooling, telemetry, and relationships before an incident. Define severity levels and communication paths.", "outputs": "IR plan, contacts, runbooks, access to logs" },
+      { "id": "detect", "n": 2, "name": "Detection & Analysis", "text": "Alerts arrive from SIEM, EDR, email, and users. Analysts validate, scope, and classify the event.", "outputs": "Incident record, severity, affected assets" },
+      { "id": "contain", "n": 3, "name": "Containment", "text": "Stop further damage: isolate hosts, revoke sessions, block domains. Short-term containment buys time for durable fixes.", "outputs": "Contained systems, preserved evidence" },
+      { "id": "eradicate", "n": 4, "name": "Eradication", "text": "Remove the root cause — malicious files, accounts, persistence, and vulnerable configurations.", "outputs": "Clean systems, patched flaws" },
+      { "id": "recover", "n": 5, "name": "Recovery", "text": "Restore services from known-good backups, validate operations, and monitor closely for regression.", "outputs": "Services online, validated data" },
+      { "id": "lessons", "n": 6, "name": "Lessons Learned", "text": "Blameless review: what happened, what worked, what to change. Feed updates back into preparation.", "outputs": "Action items, updated playbooks" }
+    ],
+    "layers": [
+      { "name": "Identity", "text": "MFA, least privilege, strong passwords, conditional access.", "icon": "🔑" },
+      { "name": "Endpoint", "text": "EDR, patching, hardening baselines, application control.", "icon": "💻" },
+      { "name": "Network", "text": "Segmentation, firewalls, IDS/IPS, DNS filtering.", "icon": "🌐" },
+      { "name": "Application", "text": "Secure coding, SAST/DAST, WAF, API gateway.", "icon": "🧱" },
+      { "name": "Data", "text": "Classification, encryption, DLP, immutable backups.", "icon": "🗄️" },
+      { "name": "People", "text": "Training, reporting culture, clear procedures.", "icon": "🧠" }
+    ],
+    "principles": [
+      { "name": "Defense in depth", "text": "Layer controls so one failure does not mean total compromise." },
+      { "name": "Zero Trust", "text": "Never trust by network location alone; verify every request, device, and identity." },
+      { "name": "Least privilege", "text": "Grant only the access needed, only for as long as it is needed." },
+      { "name": "Patch management", "text": "Inventory, prioritize by exposure, test, deploy, and verify." },
+      { "name": "Backups", "text": "Follow 3-2-1: three copies, two media, one offline/immutable, and test restores." }
+    ],
+    "teams": [
+      { "name": "Red Team", "color": "danger", "text": "Simulates adversaries to test detection and response, under strict authorization." },
+      { "name": "Blue Team", "color": "success", "text": "Defends daily: monitors, investigates, hardens, and responds." },
+      { "name": "Purple Team", "color": "accent", "text": "Bridges both: runs exercises and turns findings into measurable detection improvements." }
+    ],
+    "frameworks": [
+      { "name": "NIST CSF", "text": "Functions: Govern, Identify, Protect, Detect, Respond, Recover. A flexible outcome-based framework." },
+      { "name": "ISO/IEC 27001", "text": "Requirements for an information security management system (ISMS), with risk-based controls." },
+      { "name": "CIS Controls", "text": "Prioritized, practical safeguards such as asset inventory and MFA — great starting point." },
+      { "name": "GDPR", "text": "EU privacy regulation: lawful processing, data minimization, rights, and breach notification duties." },
+      { "name": "MITRE ATT&CK", "text": "A knowledge base of adversary tactics and techniques used to map detections and gaps." }
+    ]
+  },
+  "paths": [
+    { "id": "beginner", "title": "Security Foundations", "level": "Beginner", "duration": "3–4 hours", "desc": "Build safe habits and understand the most common threats.", "steps": ["phishing", "credential-stuffing", "mobile-device-theft", "weak-crypto"] },
+    { "id": "intermediate", "title": "Threat Analyst Essentials", "level": "Intermediate", "duration": "6–8 hours", "desc": "Learn how attacks unfold and how defenders detect them.", "steps": ["ransomware", "sql-injection", "ddos", "mitm", "evil-twin"] },
+    { "id": "advanced", "title": "Adversary Tradecraft & Response", "level": "Advanced", "duration": "10+ hours", "desc": "Perspective on persistent attackers, supply chain, and IR.", "steps": ["supply-chain", "apt", "lateral-movement", "insider-threat"] },
+    { "id": "everyday", "title": "Everyday User", "level": "All levels", "duration": "90 minutes", "desc": "Practical personal safety for email, phone, and payments.", "steps": ["phishing", "business-email-compromise", "ai-phishing", "mobile-device-theft"] },
+    { "id": "developer", "title": "Developer Security", "level": "Intermediate", "duration": "5 hours", "desc": "Secure design, common web flaws, and secrets handling.", "steps": ["sql-injection", "xss", "broken-auth", "cloud-misconfig", "weak-crypto"] },
+    { "id": "soc", "title": "Aspiring SOC Analyst", "level": "Intermediate", "duration": "8 hours", "desc": "Alert triage, log reading, and incident lifecycle practice.", "steps": ["phishing", "credential-stuffing", "ransomware", "apt", "lateral-movement"] },
+    { "id": "cloud", "title": "Cloud Engineer", "level": "Advanced", "duration": "7 hours", "desc": "Identity, exposure management, and third-party risk in the cloud.", "steps": ["cloud-misconfig", "supply-chain", "credential-stuffing", "weak-crypto"] }
+  ],
+  "glossary": [
+    { "term": "IOC", "full": "Indicator of Compromise", "def": "Evidence that suggests an intrusion occurred, such as a malicious hash, domain, IP, or unusual account behavior." },
+    { "term": "SIEM", "full": "Security Information and Event Management", "def": "A platform that collects and correlates logs from many systems to support detection, investigation, and compliance." },
+    { "term": "EDR", "full": "Endpoint Detection and Response", "def": "Tooling that records endpoint behavior and can isolate a machine during an incident." },
+    { "term": "MITRE ATT&CK", "full": "Adversary Tactics and Techniques knowledge base", "def": "A public framework describing how attackers operate, used to map detections and gaps." },
+    { "term": "MFA", "full": "Multi-Factor Authentication", "def": "Requiring two or more proofs of identity, such as a password plus a device-bound key." },
+    { "term": "Zero Trust", "full": "Zero Trust Architecture", "def": "A model where no user or device is trusted by default, even inside the network; every request is verified." },
+    { "term": "DMARC", "full": "Domain-based Message Authentication, Reporting & Conformance", "def": "An email policy that tells receivers how to handle messages failing SPF/DKIM checks." },
+    { "term": "Least privilege", "full": "Principle of Least Privilege", "def": "Giving accounts and systems only the permissions required for their legitimate task." },
+    { "term": "Kill Chain", "full": "Cyber Kill Chain", "def": "A model of attack stages from reconnaissance through actions on objectives." },
+    { "term": "Passkey", "full": "FIDO2/WebAuthn credential", "def": "A phishing-resistant login credential bound to a specific site and stored on a device or security key." },
+    { "term": "Backdoor", "full": "Persistent access mechanism", "def": "A hidden way for an attacker to return to a system without repeating the original compromise." },
+    { "term": "Exfiltration", "full": "Data exfiltration", "def": "Unauthorized transfer of data out of an organization." },
+    { "term": "Botnet", "full": "Robot network", "def": "A group of compromised devices controlled remotely, often used for DDoS or spam." },
+    { "term": "Spoofing", "full": "Identity impersonation", "def": "Faking a sender, address, or identity so traffic appears to come from a trusted source." },
+    { "term": "Hardening", "full": "Security hardening", "def": "Reducing attack surface by disabling unnecessary features, changing defaults, and applying secure settings." }
+  ],
+  "timeline": [
+    { "year": "2005", "title": "XSS worm goes viral", "text": "A self-propagating script showed that browser-side flaws can spread at internet speed.", "domain": "Web Application Attacks" },
+    { "year": "2011", "title": "RSA SecurID breach", "text": "A targeted phishing email with an attachment led to a landmark supply-chain-style compromise.", "domain": "Social Engineering" },
+    { "year": "2016", "title": "Mirai botnet & Dyn DDoS", "text": "Default-credential IoT devices disrupted major internet services.", "domain": "Wireless and IoT Attacks" },
+    { "year": "2017", "title": "WannaCry ransomware", "text": "A wormable strain exploited unpatched systems worldwide.", "domain": "Malware" },
+    { "year": "2020", "title": "SolarWinds supply chain", "text": "A signed software update became the delivery vehicle for a long-running intrusion.", "domain": "Supply Chain and Third-Party Attacks" },
+    { "year": "2021", "title": "Colonial Pipeline", "text": "A compromised remote-access credential preceded a disruptive ransomware incident.", "domain": "Advanced Threats" },
+    { "year": "2024", "title": "AI voice clone fraud", "text": "Synthetic voices were used to impersonate executives in payment fraud schemes.", "domain": "AI-driven Threats" },
+    { "year": "Today", "title": "Identity is the new perimeter", "text": "Passkeys, phishing-resistant MFA, and behavior detection define modern defense.", "domain": "Identity and Access Attacks" }
+  ],
+  "resources": [
+    { "type": "Book", "title": "Security Engineering", "author": "Ross Anderson", "note": "Deep, authoritative, and free online." },
+    { "type": "Book", "title": "The Web Application Hacker's Handbook", "author": "Dafydd Stuttard & Marcus Pinto", "note": "Classic web security reference." },
+    { "type": "Course", "title": "Google / Meta Security Certificates", "author": "Coursera", "note": "Beginner-friendly foundations." },
+    { "type": "Course", "title": "Blue Team Labs & Cyber Range platforms", "author": "Various", "note": "Hands-on practice in safe environments." },
+    { "type": "Certification", "title": "CompTIA Security+", "author": "CompTIA", "note": "Vendor-neutral entry-level certification." },
+    { "type": "Certification", "title": "Certified Ethical Hacker (CEH)", "author": "EC-Council", "note": "Broad offensive concepts; ethics emphasized." },
+    { "type": "Certification", "title": "CISSP", "author": "ISC2", "note": "Management-level security expertise." },
+    { "type": "Reference", "title": "OWASP Top 10", "author": "OWASP", "note": "The essential web risk list." },
+    { "type": "Reference", "title": "MITRE ATT&CK", "author": "MITRE", "note": "Map adversary behavior to defenses." },
+    { "type": "Feed", "title": "Latest Threats feed", "author": "API-ready placeholder", "note": "Connect your preferred threat-intel source here." }
+  ],
+  "leaderboard": [
+    { "name": "n0va", "xp": 4820, "weekly": 620, "team": "Night Owls" },
+    { "name": "kiran.s", "xp": 4310, "weekly": 580, "team": "Blue Team" },
+    { "name": "Agent_42", "xp": 3995, "weekly": 540, "team": "Night Owls" },
+    { "name": "pi_lab", "xp": 3510, "weekly": 460, "team": "Solo" },
+    { "name": "sec_learner", "xp": 3050, "weekly": 390, "team": "Classroom A" }
+  ],
+  "threatMap": [
+    { "id": "na", "region": "North America", "x": 18, "y": 14, "signal": "Credential phishing", "attack": "phishing", "count": 128, "severity": "High", "trend": "+12%", "text": "Tailored email lures are the most reported synthetic signal in this region." },
+    { "id": "sa", "region": "South America", "x": 30, "y": 35, "signal": "Invoice fraud", "attack": "business-email-compromise", "count": 42, "severity": "Medium", "trend": "+4%", "text": "Payment-change requests dominate the sample, usually through compromised mailboxes." },
+    { "id": "eu", "region": "Europe", "x": 53, "y": 14, "signal": "Ransomware", "attack": "ransomware", "count": 96, "severity": "Critical", "trend": "+18%", "text": "Double-extortion reports lead the simulated activity in this region." },
+    { "id": "af", "region": "Africa", "x": 54, "y": 30, "signal": "Credential stuffing", "attack": "credential-stuffing", "count": 31, "severity": "Medium", "trend": "+6%", "text": "Reused passwords and automated login attempts drive the sample signal." },
+    { "id": "me", "region": "Middle East", "x": 63, "y": 21, "signal": "DDoS bursts", "attack": "ddos", "count": 58, "severity": "High", "trend": "+9%", "text": "Short availability attacks are the most common simulated network event." },
+    { "id": "as", "region": "Asia", "x": 78, "y": 18, "signal": "Supply-chain risk", "attack": "supply-chain", "count": 74, "severity": "Critical", "trend": "+15%", "text": "Vendor and dependency compromise accounts for the highest-impact sample cases." },
+    { "id": "sea", "region": "Southeast Asia", "x": 82, "y": 29, "signal": "Smishing", "attack": "smishing", "count": 49, "severity": "Medium", "trend": "+7%", "text": "Delivery-fee texts and fake payment links lead the mobile-lure sample." },
+    { "id": "oc", "region": "Oceania", "x": 90, "y": 39, "signal": "Cloud exposure", "attack": "cloud-misconfig", "count": 27, "severity": "Low", "trend": "+2%", "text": "Misclassified storage and over-broad roles appear most often in the sample." }
+  ],
+  "achievements": [
+    { "id": "first-steps", "name": "First Steps", "desc": "Complete your first game round", "icon": "🚀" },
+    { "id": "phish-spotter", "name": "Phish Spotter", "desc": "Score 80%+ in Spot the Phish", "icon": "🎣" },
+    { "id": "calm-under-fire", "name": "Calm Under Fire", "desc": "Finish an Incident Responder shift", "icon": "🚨" },
+    { "id": "key-master", "name": "Key Master", "desc": "Build a strong password in Password Fortress", "icon": "🏰" },
+    { "id": "codebreaker", "name": "Codebreaker", "desc": "Solve all beginner CTF puzzles", "icon": "🔎" },
+    { "id": "scholar", "name": "Scholar", "desc": "Finish a quiz on any threat page", "icon": "📚" },
+    { "id": "network-guardian", "name": "Network Guardian", "desc": "Stop every wave in Defend the Network", "icon": "🧱" },
+    { "id": "decision-maker", "name": "Decision Maker", "desc": "Complete a Scenario Mode story", "icon": "🧭" },
+    { "id": "quiz-master", "name": "Quiz Master", "desc": "Score 150+ points in Trivia", "icon": "⚡" }
+  ],
+  "arenaMissions": [
+    { "domain": "Social Engineering", "games": ["phish", "scenario"], "locked": [] },
+    { "domain": "Identity and Access Attacks", "games": ["password", "trivia"], "locked": [] },
+    { "domain": "Blue Team Operations", "games": ["ir", "defend"], "locked": [] },
+    { "domain": "Cryptography & Analysis", "games": ["ctf", "trivia"], "locked": [] },
+    { "domain": "Network Defense", "games": ["defend", "ir"], "locked": [] },
+    { "domain": "Scenario & Trivia", "games": ["scenario", "trivia"], "locked": [] }
+  ]
+}

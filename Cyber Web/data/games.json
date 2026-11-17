@@ -1,0 +1,398 @@
+{
+  "version": 1,
+  "phish": [
+    {
+      "id": "p1",
+      "channel": "Email",
+      "from": "IT Helpdesk <helpdesk@northstar-support.com>",
+      "subject": "Urgent: password expires in 2 hours",
+      "body": "Your account password will expire soon. Click below to keep your current password and avoid lockout.",
+      "link": "https://northstar-support.com/keep-password",
+      "answer": "phish",
+      "explain": "A generic 'helpdesk' sending from an outside domain, urgency, and an offer to 'keep your current password' are classic harvesting lures. Real IT rarely asks you to confirm a password by email.",
+      "flags": ["External look-alike domain", "Urgency", "Credential request"]
+    },
+    {
+      "id": "p2",
+      "channel": "Email",
+      "from": "Payroll <payroll@acme.example>",
+      "subject": "Your payslip for October is ready",
+      "body": "Hi Sam, your October payslip is available in the employee portal. Sign in through the company intranet as usual to view it. No action is needed outside the portal.",
+      "link": "https://intranet.acme.example/payslips",
+      "answer": "safe",
+      "explain": "It uses the known internal domain, addresses the person by name, and directs them to the normal portal instead of asking for secrets. Still make a habit of navigating to the portal yourself.",
+      "flags": ["Known domain", "No credential request", "Routine tone"]
+    },
+    {
+      "id": "p3",
+      "channel": "SMS",
+      "from": "+1 (555) 0142",
+      "subject": "Delivery notice",
+      "body": "Your parcel could not be delivered. Pay the 1.99 redelivery fee at this secure link: hxxp://parcel-track-247[.]info/pay",
+      "link": "(shortened link)",
+      "answer": "phish",
+      "explain": "Unexpected delivery text, a tiny payment, and a newly registered domain are textbook smishing. The small fee encourages fast, unthinking payment and card theft.",
+      "flags": ["Unknown sender", "Small payment", "New domain", "Shortened link"]
+    },
+    {
+      "id": "p4",
+      "channel": "Website",
+      "from": "Browser tab",
+      "subject": "Sign in — CloudMail",
+      "body": "A login page with the right logo, but the address bar reads cl0udmail-verify[.]top and the certificate belongs to an unknown organization.",
+      "link": "cl0udmail-verify[.]top",
+      "answer": "phish",
+      "explain": "Brand look-alikes and mismatched certificates are strong signals. Check the exact domain, not just the logo, and never enter credentials on a page reached from a message link.",
+      "flags": ["Look-alike domain", "Certificate mismatch", "Logo-only branding"]
+    },
+    {
+      "id": "p5",
+      "channel": "Email",
+      "from": "Dana Reed <dana.reed@partner.example>",
+      "subject": "Re: Q3 invoice — corrected bank details",
+      "body": "Hi Alex, please use the attached updated invoice for Q3. Our bank changed last week; the new account is in the PDF. Thanks, Dana",
+      "link": "(attachment: invoice_q3_updated.pdf)",
+      "answer": "phish",
+      "explain": "A payment-detail change from a known partner is a classic business email compromise pattern. Verify by calling a known contact on a saved number before changing any payment details.",
+      "flags": ["Payment change", "Attachment", "Known sender but unusual request"]
+    },
+    {
+      "id": "p6",
+      "channel": "Chat",
+      "from": "Ravi (project team)",
+      "subject": "Quick favour",
+      "body": "I'm in a meeting and need a gift card for a client today. Can you buy one and send me the code? I'll pay you back tomorrow.",
+      "link": "—",
+      "answer": "phish",
+      "explain": "Urgency, secrecy, and a request for gift-card codes are strong impersonation signals even in internal chat. Confirm on a voice call or in person.",
+      "flags": ["Urgency", "Gift card", "Out-of-character request"]
+    }
+  ],
+  "incidents": [
+    {
+      "id": "ir1",
+      "title": "Alert: Impossible travel + mailbox rule",
+      "severity": "High",
+      "time": "02:14 UTC",
+      "user": "a.morgan@acme.example",
+      "logs": [
+        "02:11  Sign-in success | user=a.morgan | ip=203.0.113.44 | geo=Frankfurt | device=Chrome/Win",
+        "02:13  Sign-in success | user=a.morgan | ip=198.51.100.9 | geo=Singapore | device=Chrome/Win",
+        "02:14  New inbox rule created | name='filter' | move messages with 'invoice' to Deleted Items",
+        "02:14  OAuth grant added | app='MailHelper' | scopes=Mail.Read, Mail.Send"
+      ],
+      "options": [
+        { "label": "Ignore — likely a VPN", "score": -15, "explain": "Ignoring a high-confidence account takeover signal risks data theft. VPNs still need verification." },
+        { "label": "Revoke sessions, reset password, remove mailbox rule and OAuth grant", "score": 40, "explain": "Correct: contain the account, remove persistence, and force re-authentication with MFA." },
+        { "label": "Email the user and wait until morning", "score": -5, "explain": "Waiting gives the attacker hours. Contain first, then communicate through a known channel." },
+        { "label": "Delete the mailbox entirely", "score": 5, "explain": "Overly destructive action destroys evidence and business data. Contain and preserve." }
+      ],
+      "lesson": "Account takeover often shows up as a login anomaly followed by mailbox rules or OAuth grants — check both."
+    },
+    {
+      "id": "ir2",
+      "title": "Alert: Mass file encryption on FIN share",
+      "severity": "Critical",
+      "time": "09:42 UTC",
+      "user": "host=FIN-WS-07",
+      "logs": [
+        "09:38  Endpoint alert: shadow copy deletion attempt (vssadmin.exe)",
+        "09:40  File audit: 1,284 files renamed with .locked extension on \\\\fileserver\\FIN",
+        "09:41  EDR: process winupdate32.exe flagged — known ransomware behavior",
+        "09:42  Network: SMB writes from FIN-WS-07 to 14 hosts"
+      ],
+      "options": [
+        { "label": "Isolate the host, block SMB spread, and start the IR bridge", "score": 45, "explain": "Correct: rapid isolation and cross-team coordination limit blast radius while preserving evidence." },
+        { "label": "Reboot the machine and continue working", "score": -20, "explain": "Rebooting does not remove the cause and may destroy volatile evidence." },
+        { "label": "Run a full antivirus scan tomorrow", "score": -15, "explain": "Too slow for an active, spreading incident." },
+        { "label": "Restore from the mapped drive backup immediately", "score": 0, "explain": "A mapped backup may also be encrypted. Verify isolation and integrity before restoring." }
+      ],
+      "lesson": "Ransomware response prioritizes containment and evidence preservation before recovery."
+    },
+    {
+      "id": "ir3",
+      "title": "Alert: Unusual cloud API activity",
+      "severity": "Medium",
+      "time": "14:02 UTC",
+      "user": "svc-deploy@acme.example",
+      "logs": [
+        "13:55  IAM policy updated: role 'deploy' gains sts:AssumeRole on *",
+        "13:58  New access key created for svc-deploy",
+        "14:00  ListBuckets called from 192.0.2.77 (unrecognized ASN)",
+        "14:02  GetObject calls on 3 backups (unusual for this service)"
+      ],
+      "options": [
+        { "label": "Disable the key, review the role, and check CloudTrail scope", "score": 40, "explain": "Correct: revoke the exposed credential and determine what else the identity touched." },
+        { "label": "It is a service account, so no action needed", "score": -20, "explain": "Service accounts are high-value targets and often over-privileged." },
+        { "label": "Delete all backups to be safe", "score": -25, "explain": "That destroys recovery options and evidence." },
+        { "label": "Wait for the monthly access review", "score": -10, "explain": "Active credential misuse needs immediate action." }
+      ],
+      "lesson": "Cloud incidents are identity incidents — keys, roles, and audit logs are your primary controls."
+    },
+    {
+      "id": "ir4",
+      "title": "Alert: Web request anomalies",
+      "severity": "Low",
+      "time": "18:20 UTC",
+      "user": "source=198.51.100.22",
+      "logs": [
+        "18:18  GET /search?q=test' OR '1'='1  -> 200 (unusual length)",
+        "18:19  GET /search?q=test  -> 500 (database error exposed)",
+        "18:20  Multiple requests with UNION SELECT patterns -> blocked by WAF"
+      ],
+      "options": [
+        { "label": "Confirm WAF blocks, capture requests, and open a dev ticket for parameterization", "score": 35, "explain": "Correct: the WAF bought time; the durable fix is in code, plus checking whether data was accessed." },
+        { "label": "Block the IP and close the alert", "score": 5, "explain": "Partial: blocking one IP does not fix the underlying flaw or other sources." },
+        { "label": "Ignore because the WAF blocked it", "score": -10, "explain": "WAF rules can be bypassed; the 500 error indicates a real application weakness." },
+        { "label": "Shut down the whole website", "score": 0, "explain": "Disproportionate for a blocked scan; scope and severity should guide response." }
+      ],
+      "lesson": "WAF signals are clues, not a cure. Track the root cause to remediation."
+    }
+  ],
+  "ctf": [
+    {
+      "id": "c1",
+      "title": "Decode the note",
+      "type": "base64",
+      "prompt": "A suspicious note contains: VGhlIGZsYWcgaXMgc2FmZS1sZWFybmluZw==",
+      "hint": "Base64 ends with padding characters and is often used to obfuscate text, not encrypt it.",
+      "answer": "the flag is safe-learning",
+      "explain": "Base64 is an encoding, not encryption. Decoding reveals the plain text — never treat it as a secret."
+    },
+    {
+      "id": "c2",
+      "title": "Shift the alphabet",
+      "type": "caesar",
+      "prompt": "Decode this Caesar-shifted message: ZDWFK BRXU ILUVW LQVWLQFW",
+      "hint": "Try shifting each letter back by three positions.",
+      "answer": "watch your first instinct",
+      "explain": "A simple substitution cipher preserves word spacing and letter patterns, making it easy to break."
+    },
+    {
+      "id": "c3",
+      "title": "Read the log",
+      "type": "logic",
+      "prompt": "Which event is the strongest sign of a compromised account? (A) A failed login from a known device (B) A successful login from a new country two minutes after one in your office (C) A password reset you requested",
+      "hint": "Think about physical impossibility, not just failure.",
+      "answer": "b",
+      "explain": "Impossible travel between logins is a high-confidence signal that an account may be in use by someone else."
+    },
+    {
+      "id": "c4",
+      "title": "Spot the indicator",
+      "type": "logic",
+      "prompt": "Which of these is an indicator of compromise rather than a safe sign? (A) A signed update from your vendor (B) A new inbox rule forwarding invoices to an external address (C) A scheduled patch reboot",
+      "hint": "Attackers like rules that quietly move or copy mail.",
+      "answer": "b",
+      "explain": "Mail forwarding or deletion rules are a common persistence technique after account takeover."
+    }
+  ],
+  "trivia": [
+    {
+      "q": "Which control still works when a password is stolen?",
+      "options": ["A longer password", "Phishing-resistant MFA / passkeys", "Changing passwords monthly", "A hidden email address"],
+      "answer": 1,
+      "explain": "Passkeys and security keys bind the login to a site and device, so a stolen password alone is not enough."
+    },
+    {
+      "q": "What does DMARC help a domain owner do?",
+      "options": ["Encrypt stored files", "Tell receivers how to handle mail that fails SPF/DKIM", "Block all outbound mail", "Generate passwords"],
+      "answer": 1,
+      "explain": "SPF and DKIM authenticate mail; DMARC publishes the policy for failures and provides reports."
+    },
+    {
+      "q": "Ransomware that also threatens to publish stolen data is called…",
+      "options": ["Double extortion", "Smishing", "Session fixation", "Amplification"],
+      "answer": 0,
+      "explain": "Double extortion combines encryption with data-theft leverage."
+    },
+    {
+      "q": "Which is the safest way to verify an urgent payment-change request?",
+      "options": ["Reply to the same email", "Call a saved number for the vendor", "Check the logo", "Ask the sender to confirm by email"],
+      "answer": 1,
+      "explain": "Use a channel you already trust, not contact details supplied in the suspicious message."
+    },
+    {
+      "q": "Base64 is best described as…",
+      "options": ["Strong encryption", "An encoding, not encryption", "A hash function", "A firewall rule"],
+      "answer": 1,
+      "explain": "Encoding changes representation so data can travel safely; it provides no secrecy."
+    },
+    {
+      "q": "What is the goal of defense in depth?",
+      "options": ["One perfect control", "Layers that assume other controls can fail", "No logging", "Trusting internal traffic"],
+      "answer": 1,
+      "explain": "Layered controls slow attackers and create multiple chances to detect them."
+    },
+    {
+      "q": "Which password practice is strongest?",
+      "options": ["One complex password everywhere", "A unique long passphrase per account in a manager", "Passwords written on a desk", "Sharing passwords with teammates"],
+      "answer": 1,
+      "explain": "Uniqueness prevents one breach from becoming many; length and a manager make it practical."
+    },
+    {
+      "q": "An unexpected MFA push at 2am should be…",
+      "options": ["Approved quickly", "Denied and reported", "Ignored forever", "Shared with IT by screenshot"],
+      "answer": 1,
+      "explain": "Push bombing relies on annoyance; deny and report so defenders can investigate."
+    },
+    {
+      "q": "What does a WAF primarily protect?",
+      "options": ["Physical doors", "Web applications from common attacks", "Password reuse", "Lost devices"],
+      "answer": 1,
+      "explain": "A web application firewall filters HTTP traffic; it complements secure code rather than replacing it."
+    },
+    {
+      "q": "Which log signal best suggests account takeover?",
+      "options": ["A failed login from your usual laptop", "A successful login from a new country minutes after one at home", "A scheduled reboot", "A normal password reset you requested"],
+      "answer": 1,
+      "explain": "Impossible travel is a high-confidence behavioral anomaly worth immediate triage."
+    },
+    {
+      "q": "What is a supply chain attack?",
+      "options": ["Stealing a delivery van", "Compromising a trusted vendor or dependency to reach many victims", "Attacking a warehouse", "Guessing a password"],
+      "answer": 1,
+      "explain": "Trust in a vendor or update channel becomes the delivery mechanism."
+    },
+    {
+      "q": "In the NIST lifecycle, what happens immediately after containment?",
+      "options": ["Eradication", "Preparation", "Lessons learned", "Recovery"],
+      "answer": 0,
+      "explain": "Contain first, remove the root cause, then recover services and review."
+    }
+  ],
+  "flashcards": [
+    { "front": "IOC", "back": "Indicator of Compromise — evidence such as a malicious hash, domain, IP, or behavior that suggests intrusion." },
+    { "front": "SIEM", "back": "Collects and correlates logs from many systems for detection, investigation, and compliance." },
+    { "front": "EDR", "back": "Endpoint Detection and Response — records endpoint behavior and can isolate a host during an incident." },
+    { "front": "MITRE ATT&CK", "back": "A public knowledge base of adversary tactics and techniques used to map detections." },
+    { "front": "Zero Trust", "back": "Never trust by network location alone; verify each request, device, and identity." },
+    { "front": "DMARC", "back": "Email policy that tells receivers how to handle messages failing SPF/DKIM checks." },
+    { "front": "Passkey", "back": "A phishing-resistant credential bound to a site and stored on a device or security key." },
+    { "front": "Least privilege", "back": "Give accounts only the access needed, only for as long as needed." },
+    { "front": "Exfiltration", "back": "Unauthorized transfer of data out of an organization." },
+    { "front": "Kill Chain", "back": "A model of attack stages from reconnaissance through actions on objectives." }
+  ],
+  "scenarios": [
+    {
+      "id": "lost-phone",
+      "title": "Lost Phone at the Airport",
+      "subtitle": "A fictional scenario · choose your response",
+      "start": "s1",
+      "lesson": "Fast containment beats optimism: lock the device, revoke sessions, and rotate credentials before worrying about the hardware.",
+      "nodes": {
+        "s1": {
+          "text": "You realize your work phone is gone. It had email, an authenticator app, and saved payment cards. You are boarding in 15 minutes.",
+          "choices": [
+            { "label": "Wait an hour — it is probably in the seat pocket", "next": "s2", "score": 0, "feedback": "Waiting is risky. Treat a missing device as compromised until proven otherwise." },
+            { "label": "Use Find My Device to lock it, then call IT from a safe phone", "next": "s3", "score": 10, "feedback": "Good. Lock first, then notify the team so sessions can be revoked." },
+            { "label": "Post your number on social media in case someone finds it", "next": "s2", "score": 0, "feedback": "That invites scams and reveals you are travelling. Avoid public broadcast." }
+          ]
+        },
+        "s2": {
+          "text": "An hour later, a text arrives from an unknown number: 'Found your phone. Confirm your password and we'll ship it back.'",
+          "choices": [
+            { "label": "Send the password — you need the phone back", "next": "s4", "score": 0, "feedback": "That is a classic follow-on scam. A finder has no legitimate need for your password." },
+            { "label": "Ignore it and continue remote lock + credential rotation", "next": "s3", "score": 10, "feedback": "Correct. The message is an opportunity to steal credentials, not to return property." }
+          ]
+        },
+        "s3": {
+          "text": "IT confirms a login to your email from an unfamiliar location 20 minutes ago. What now?",
+          "choices": [
+            { "label": "Reset email password and revoke all sessions immediately", "next": "end", "score": 10, "feedback": "Yes. Email is the reset hub for everything else; contain it first." },
+            { "label": "Only change the phone's lock-screen PIN", "next": "end", "score": 0, "feedback": "Too narrow — the attacker is already using your cloud accounts." }
+          ]
+        },
+        "s4": {
+          "text": "You sent a password. The attacker now tries to sign in to your email.",
+          "choices": [
+            { "label": "Reset from a clean device, enable passkeys, and report the scam", "next": "end", "score": 5, "feedback": "Recovery is possible, but the earlier password share made this harder than it needed to be." },
+            { "label": "Assume MFA would have stopped it and do nothing", "next": "end", "score": 0, "feedback": "MFA helps, but you must still rotate credentials and revoke sessions after a confirmed compromise." }
+          ]
+        },
+        "end": { "end": true, "text": "Scenario complete." }
+      }
+    },
+    {
+      "id": "invoice-change",
+      "title": "The Midnight Invoice",
+      "subtitle": "A fictional scenario · choose your response",
+      "start": "i1",
+      "lesson": "Payment fraud succeeds through process, not malware. Independent verification and two-person approval break the chain.",
+      "nodes": {
+        "i1": {
+          "text": "At 23:40, an email from your CFO says: 'Urgent: pay the attached vendor invoice tonight. New bank details. Keep this quiet — board meeting tomorrow.'",
+          "choices": [
+            { "label": "Pay quickly to be helpful", "next": "i2", "score": 0, "feedback": "Urgency plus secrecy plus new bank details is the highest-risk combination in business email compromise." },
+            { "label": "Pause payment and call the CFO on a saved number", "next": "i3", "score": 10, "feedback": "Correct. Verification on a known channel is the control that matters." }
+          ]
+        },
+        "i2": {
+          "text": "The 'CFO' replies: 'Do not call, I'm in a board meeting. Just process it.'",
+          "choices": [
+            { "label": "Follow the second instruction", "next": "i4", "score": 0, "feedback": "A scammer will always have a reason to prevent verification. That is the signal." },
+            { "label": "Escalate to finance security using the incident channel", "next": "i3", "score": 10, "feedback": "Good escalation. The pressure to avoid verification confirms the need for it." }
+          ]
+        },
+        "i3": {
+          "text": "The real CFO confirms they never sent the request. The domain was one character off.",
+          "choices": [
+            { "label": "Block the domain, report the message, and check for other similar emails", "next": "end", "score": 10, "feedback": "Yes. Contain the campaign and look for other recipients before closing the incident." },
+            { "label": "Delete just that one email and move on", "next": "end", "score": 0, "feedback": "The same actor likely targeted others. Reporting enables organization-wide containment." }
+          ]
+        },
+        "i4": {
+          "text": "Payment was sent. Finance notices the anomaly the next morning.",
+          "choices": [
+            { "label": "Contact the bank immediately and preserve the email evidence", "next": "end", "score": 5, "feedback": "Fast reporting improves recovery odds; the earlier pause would have avoided the loss entirely." },
+            { "label": "Wait to see if the vendor complains", "next": "end", "score": 0, "feedback": "Delay reduces the chance of recalling funds and lets the attacker continue." }
+          ]
+        },
+        "end": { "end": true, "text": "Scenario complete." }
+      }
+    }
+  ],
+  "defenseGame": {
+    "budget": 11,
+    "nodes": [
+      { "id": "email", "name": "Email gateway", "icon": "📧", "hint": "Messages and links arrive here." },
+      { "id": "identity", "name": "Identity", "icon": "🔑", "hint": "Logins, MFA, and sessions." },
+      { "id": "endpoint", "name": "Endpoint", "icon": "💻", "hint": "Laptops and servers." },
+      { "id": "network", "name": "Network", "icon": "🌐", "hint": "Traffic and segmentation." },
+      { "id": "data", "name": "Data", "icon": "🗄️", "hint": "Storage, backups, and exfiltration." }
+    ],
+    "controls": [
+      { "id": "filter", "name": "Email filtering", "icon": "📧", "cost": 2, "counters": ["phishing", "bec"], "desc": "Blocks malicious messages, links, and look-alike domains." },
+      { "id": "mfa", "name": "MFA / passkeys", "icon": "🔑", "cost": 3, "counters": ["credential", "insider"], "desc": "Stops password reuse and push-prompt abuse." },
+      { "id": "edr", "name": "EDR", "icon": "💻", "cost": 3, "counters": ["malware", "ransomware"], "desc": "Detects suspicious execution and isolates hosts." },
+      { "id": "segment", "name": "Segmentation", "icon": "🧱", "cost": 2, "counters": ["lateral", "ddos"], "desc": "Limits spread and absorbs traffic floods." },
+      { "id": "backup", "name": "Immutable backups", "icon": "🗄️", "cost": 2, "counters": ["ransomware"], "desc": "Enables recovery without paying extortion." },
+      { "id": "dlp", "name": "DLP & encryption", "icon": "🔐", "cost": 2, "counters": ["exfil"], "desc": "Detects and limits unauthorized data leaving the network." }
+    ],
+    "waves": [
+      {
+        "name": "Wave 1 · Deception at the door",
+        "attacks": [
+          { "type": "phishing", "name": "Credential phish", "node": "email", "text": "A fake login page targets staff inboxes." },
+          { "type": "bec", "name": "Invoice redirect", "node": "email", "text": "A look-alike supplier asks for new bank details." }
+        ]
+      },
+      {
+        "name": "Wave 2 · Foothold and spread",
+        "attacks": [
+          { "type": "malware", "name": "Dropper", "node": "endpoint", "text": "An attachment executes on a workstation." },
+          { "type": "lateral", "name": "Lateral movement", "node": "network", "text": "Stolen credentials are reused on internal systems." },
+          { "type": "ransomware", "name": "Encryptor", "node": "data", "text": "File shares begin mass encryption." }
+        ]
+      },
+      {
+        "name": "Wave 3 · Identity and exfiltration",
+        "attacks": [
+          { "type": "credential", "name": "Password spray", "node": "identity", "text": "Common passwords are tried across many accounts." },
+          { "type": "exfil", "name": "Data exfiltration", "node": "data", "text": "Archives are staged for upload." },
+          { "type": "ddos", "name": "Traffic flood", "node": "network", "text": "Public services are saturated." }
+        ]
+      }
+    ]
+  }
+}
